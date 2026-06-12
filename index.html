@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Brand Baseball Analytics — Tool Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0d; --panel:#131316; --panel2:#191920;
+    --ink:#efece4; --mute:#8e8e96; --dim:#5c5c63;
+    --gold:#f5b700; --gold-dim:#b58400;
+    --line:#232328; --line-soft:#1b1b1f;
+    --green:#4caf6d; --blue:#6aa5d6; --red:#d65340; --purple:#b86be0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Archivo',system-ui,sans-serif;font-weight:500;
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+    background-image:
+      radial-gradient(900px 520px at 85% -10%, rgba(245,183,0,.06), transparent 60%),
+      radial-gradient(700px 460px at -8% 105%, rgba(106,165,214,.04), transparent 55%);
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+
+  /* masthead */
+  header{padding:42px 0 22px;border-bottom:2px solid var(--gold);display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .brand-line{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;display:flex;align-items:center;gap:10px}
+  .brand-line .dot{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(245,183,0,.6)}
+  h1{font-weight:900;font-size:clamp(30px,5.6vw,52px);line-height:1.02;letter-spacing:-.022em;margin-top:12px}
+  h1 .thin{color:var(--mute);font-weight:700}
+  .meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-align:right;line-height:1.9}
+  .meta b{color:var(--mute);font-weight:500}
+
+  /* legend strip */
+  .legend{display:flex;gap:18px;flex-wrap:wrap;padding:16px 0 0;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+  /* sections */
+  section{margin-top:46px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--gold);min-width:52px}
+  .sec-title{font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .sec-sub{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-left:auto;text-align:right}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+
+  a.card{
+    display:block;text-decoration:none;color:inherit;
+    background:var(--panel);border:1px solid var(--line-soft);border-radius:10px;
+    padding:18px 18px 16px;position:relative;overflow:hidden;
+    transition:border-color .18s ease, transform .18s ease, background .18s ease;
+  }
+  a.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--gold));opacity:.85}
+  a.card:hover{border-color:var(--accent,var(--gold));background:var(--panel2);transform:translateY(-2px)}
+  a.card:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,var(--gold));margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .tag .arrow{color:var(--dim);font-weight:400;letter-spacing:0;transition:color .18s ease, transform .18s ease}
+  a.card:hover .arrow{color:var(--ink);transform:translateX(3px)}
+  .card-title{font-weight:800;font-size:16.5px;letter-spacing:-.012em;line-height:1.2;margin-bottom:6px}
+  .card-desc{font-size:13px;color:var(--mute);font-weight:500;line-height:1.45}
+  .card-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);margin-top:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* accent classes = workflow phase */
+  .ph-pre{--accent:var(--blue)}
+  .ph-post{--accent:var(--green)}
+  .ph-design{--accent:var(--purple)}
+  .ph-proj{--accent:var(--gold)}
+  .ph-scout{--accent:var(--red)}
+
+  footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:.08em}
+
+  @media (prefers-reduced-motion: reduce){
+    a.card, .tag .arrow{transition:none}
+    a.card:hover{transform:none}
+  }
+  @media (max-width:560px){
+    .meta{text-align:left}
+    .sec-sub{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="brand-line"><span class="dot"></span>No Brand Baseball Analytics</div>
+      <h1>Tool Hub <span class="thin">/ All Reports &amp; Models</span></h1>
+    </div>
+    <div class="meta">
+      <div><b>14 tools</b> · all live</div>
+      <div>updated JUN 2026</div>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span><i style="background:var(--blue)"></i>Pregame</span>
+    <span><i style="background:var(--green)"></i>Postgame</span>
+    <span><i style="background:var(--gold)"></i>Projection</span>
+    <span><i style="background:var(--purple)"></i>Pitch design</span>
+    <span><i style="background:var(--red)"></i>Scout / development</span>
+  </div>
+
+  <!-- ============ SKENES ============ -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">#30</div>
+      <div class="sec-title">Paul Skenes — Game Suite</div>
+      <div class="sec-sub">Pirates · RHP · full pre / in / post cycle</div>
+    </div>
+    <div class="grid">
+
+      <a class="card ph-pre" href="https://sicher19-dev.github.io/skenes-scout/" target="_blank" rel="noopener">
+        <div class="tag">Pregame <span class="arrow">→</span></div>
+        <div class="card-title">Skenes Scout</div>
+        <div class="card-desc">Opponent lineup breakdown — pitch heat maps, count tendencies, spray charts, platoon splits per hitter.</div>
+        <div class="card-url">sicher19-dev.github.io/skenes-scout</div>
+      </a>
+
+      <a class="card ph-proj" href="https://sicher19-dev.github.io/skenes-projection/" target="_blank" rel="noopener">
+        <div class="tag">Projection <span class="arrow">→</span></div>
+        <div class="card-title">Skenes Projection</div>
+        <div class="card-desc">10,000-run Monte Carlo start projection with defense-tax multiplier and confidence meter.</div>
+        <div class="card-url">sicher19-dev.github.io/skenes-projection</div>
+      </a>
+
+      <a class="card ph-post" href="https://sicher19-dev.github.io/reverse-report-skenes-starts/" target="_blank" rel="noopener">
+        <div class="tag">Postgame <span class="arrow">→</span></div>
+        <div class="card-title">Reverse Game Reports</div>
+        <div class="card-desc">Post-start diagnostics separating fixable process problems from luck. Full series, start by start.</div>
+        <div class="card-url">sicher19-dev.github.io/reverse-report-skenes-starts</div>
+      </a>
+
+      <a class="card ph-post" href="https://sicher19-dev.github.io/skenes-contact-lab/" target="_blank" rel="noopener">
+        <div class="tag">Postgame <span class="arrow">→</span></div>
+        <div class="card-title">Contact Point Lab</div>
+        <div class="card-desc">Bat-tracking intercept data mapped to damage outcomes — where contact happens and what it costs.</div>
+        <div class="card-url">sicher19-dev.github.io/skenes-contact-lab</div>
+      </a>
+
+      <a class="card ph-post" href="https://sicher19-dev.github.io/skenes-miss-diagnostic/" target="_blank" rel="noopener">
+        <div class="tag">Postgame <span class="arrow">→</span></div>
+        <div class="card-title">Swing Timing + Miss Diagnostic</div>
+        <div class="card-desc">Miss-distance and swing-timing read on every whiff — is the stuff beating barrels or fooling them.</div>
+        <div class="card-url">sicher19-dev.github.io/skenes-miss-diagnostic</div>
+      </a>
+
+      <a class="card ph-design" href="https://sicher19-dev.github.io/pitch-design-lab/" target="_blank" rel="noopener">
+        <div class="tag">Pitch design <span class="arrow">→</span></div>
+        <div class="card-title">PS20 Pitch Design Lab</div>
+        <div class="card-desc">Full arsenal sandbox — movement plots, trajectory animator, comp engine, grips, VAA/HAA visualizer.</div>
+        <div class="card-url">sicher19-dev.github.io/pitch-design-lab</div>
+      </a>
+
+      <a class="card ph-design" href="https://skenes-mound.vercel.app/" target="_blank" rel="noopener">
+        <div class="tag">Pitch design <span class="arrow">→</span></div>
+        <div class="card-title">HAA Mound Positioning Model</div>
+        <div class="card-desc">The ~24" rubber positioning split and what it does to approach angle — Hawk-Eye era rarity study.</div>
+        <div class="card-url">skenes-mound.vercel.app</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ CHANDLER ============ -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">#36</div>
+      <div class="sec-title">Bubba Chandler</div>
+      <div class="sec-sub">Pirates · RHP · fastball is the engine</div>
+    </div>
+    <div class="grid">
+
+      <a class="card ph-pre" href="https://sicher19-dev.github.io/chandler-scout/" target="_blank" rel="noopener">
+        <div class="tag">Pregame <span class="arrow">→</span></div>
+        <div class="card-title">Chandler Scout</div>
+        <div class="card-desc">Opponent attack plan with the plain-language narrative spine up top — kill-pitch changes by time through order.</div>
+        <div class="card-url">sicher19-dev.github.io/chandler-scout</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ CWS / DRAFT ============ -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">CWS</div>
+      <div class="sec-title">College World Series &amp; Draft</div>
+      <div class="sec-sub">Omaha 2026</div>
+    </div>
+    <div class="grid">
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/volchko-texas-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Volchko vs Texas</div>
+        <div class="card-desc">Full Texas lineup scout + count-aware pitch sequencing for the Georgia–Texas CWS opener. UGA colors.</div>
+        <div class="card-url">sicher19-dev.github.io/volchko-texas-scout</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ FARM ARMS ============ -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">DEV</div>
+      <div class="sec-title">Arm Scout Series</div>
+      <div class="sec-sub">MiLB · league-scoped opponent data</div>
+    </div>
+    <div class="grid">
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/henry-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Cole Henry</div>
+        <div class="card-desc">Arm scout report — plus the axis-tightening intervention tying the ride ask and the cutter to one root.</div>
+        <div class="card-url">sicher19-dev.github.io/henry-scout</div>
+      </a>
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/barco-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Hunter Barco</div>
+        <div class="card-desc">Arm scout report — new-sinker era, opponent breakdown scoped to league.</div>
+        <div class="card-url">sicher19-dev.github.io/barco-scout</div>
+      </a>
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/edwards-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Garrett Edwards</div>
+        <div class="card-desc">Arm scout report — opponent hitter profiles and attack plan.</div>
+        <div class="card-url">sicher19-dev.github.io/edwards-scout</div>
+      </a>
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/taylor-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Grant Taylor</div>
+        <div class="card-desc">Arm scout report — one-seam SSW sinker project, Kick Change in the arsenal.</div>
+        <div class="card-url">sicher19-dev.github.io/taylor-scout</div>
+      </a>
+
+      <a class="card ph-scout" href="https://sicher19-dev.github.io/harrington-scout/" target="_blank" rel="noopener">
+        <div class="tag">Scout <span class="arrow">→</span></div>
+        <div class="card-title">Thomas Harrington</div>
+        <div class="card-desc">Arm scout report — opponent hitter profiles and attack plan.</div>
+        <div class="card-url">sicher19-dev.github.io/harrington-scout</div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <div>NO BRAND BASEBALL ANALYTICS</div>
+    <div>process &gt; luck · no credit until it holds in live ABs</div>
+  </footer>
+
+</div>
+</body>
+</html>
