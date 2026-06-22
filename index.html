@@ -41,6 +41,25 @@
   .legend span{display:flex;align-items:center;gap:7px}
   .legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
 
+  /* featured WIP hero card */
+  a.feature{
+    display:block;text-decoration:none;color:inherit;margin-top:26px;
+    background:linear-gradient(135deg, rgba(245,183,0,.10), rgba(245,183,0,.03) 55%, var(--panel) 100%);
+    border:1.5px solid var(--gold-dim);border-radius:12px;padding:24px 26px;position:relative;overflow:hidden;
+    transition:border-color .18s ease, transform .18s ease;
+  }
+  a.feature::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+  a.feature:hover{border-color:var(--gold);transform:translateY(-2px)}
+  a.feature:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .feature-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .feature-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .wip{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#0b0b0d;background:var(--gold);padding:3px 8px;border-radius:4px}
+  .feature-title{font-weight:900;font-size:clamp(21px,3.4vw,28px);letter-spacing:-.018em;line-height:1.08;margin-bottom:8px}
+  .feature-title .arrow{color:var(--gold-dim);font-weight:400;transition:transform .18s ease}
+  a.feature:hover .feature-title .arrow{transform:translateX(4px)}
+  .feature-desc{font-size:14px;color:var(--mute);font-weight:500;line-height:1.5;max-width:78ch}
+  .feature-url{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--dim);margin-top:14px}
+
   /* sections */
   section{margin-top:46px}
   .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px}
@@ -106,6 +125,26 @@
     <span><i style="background:var(--purple)"></i>Pitch design</span>
     <span><i style="background:var(--red)"></i>Scout / development</span>
   </div>
+
+  <a class="feature" href="https://sicher19-dev.github.io/offseason-hub/" target="_blank" rel="noopener">
+    <div class="feature-top">
+      <span class="feature-eyebrow">★ Flagship · Roster-Wide</span>
+      <span class="wip">Work in Progress</span>
+    </div>
+    <div class="feature-title">Offseason Hub — Mocap &amp; Pitching Analysis <span class="arrow">→</span></div>
+    <div class="feature-desc">The full No Brand postseason arsenal report — mocap-informed delivery profile, per-pitch optimization with confidence bands, inferred SSW methodology, and a 12-week plan. Built as a data-swap template to scale across every arm on the roster.</div>
+    <div class="feature-url">sicher19-dev.github.io/offseason-hub</div>
+  </a>
+
+  <a class="feature" href="https://sicher19-dev.github.io/offseason-lab/" target="_blank" rel="noopener">
+    <div class="feature-top">
+      <span class="feature-eyebrow">★ Flagship · Performance Lab</span>
+      <span class="wip">Work in Progress</span>
+    </div>
+    <div class="feature-title">Performance Lab — Theia + TrackMan <span class="arrow">→</span></div>
+    <div class="feature-desc">Hub-and-spoke per-pitcher dashboard marrying Theia motion capture, TrackMan ball-flight, grips, and pitch shape — synchronized on a shared release-locked delivery spine, with cross-channel intervention reads telling each arm where to go next.</div>
+    <div class="feature-url">sicher19-dev.github.io/offseason-lab</div>
+  </a>
 
   <!-- ============ SKENES ============ -->
   <section>
